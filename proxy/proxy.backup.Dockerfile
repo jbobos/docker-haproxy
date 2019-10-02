@@ -9,10 +9,11 @@ FROM haproxy:2.0.7-alpine
 # https://github.com/mminks/haproxy-docker-logging
 RUN set -ex	\
   && apk update \
-  && apk add --no-cache rsyslog dumb-init \
+  && apk add --no-cache rsyslog keepalived dumb-init \
+  && rm -rf /var/cache/apk/* \
   && touch /var/log/haproxy.log \
-  # here's the catch: by creating a soft-link that 
-  # links /var/log/haproxy.log to /dev/stdout whatever 
+  # here's the catch: by creating a soft-link that
+  # links /var/log/haproxy.log to /dev/stdout whatever
   # rsyslogd writes to the file will endup being
   # propagated to the standard output of the container
   && ln -sf /dev/stdout /var/log/haproxy.log
@@ -20,6 +21,7 @@ RUN set -ex	\
 # Configurations
 COPY haproxy.cfg /usr/local/etc/haproxy/haproxy.cfg
 COPY rsyslog.conf /etc/rsyslog.conf
+COPY keepalived.backup.conf /etc/keepalived/keepalived.conf
 
 # Include our custom entrypoint that will the the job of lifting
 # rsyslog alongside haproxy.
