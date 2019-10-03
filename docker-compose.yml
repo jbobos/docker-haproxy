@@ -6,7 +6,7 @@ services:
   web:
     image: nginx:1.17.3-alpine
     networks:
-      - my_bridge_network
+      - my_net
 
   proxy:
     image: proxy:1.0.0-alpine
@@ -18,19 +18,21 @@ services:
       - DNS_SERVER_PORT=53
       - KEEPALIVED_VIP=172.18.0.101
     restart: always
+    expose:
+      - 80
     build:
       context: ./proxy/
     networks:
       hostnet: {}
     networks:
-      - my_bridge_network
+      - my_net
     cap_add:
       - NET_ADMIN
     depends_on:
       - web
 
 networks:
-  my_bridge_network:
+  my_net:
   hostnet:
     external:
       name: host
