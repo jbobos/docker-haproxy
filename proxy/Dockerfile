@@ -21,8 +21,7 @@ RUN set -ex	\
 # Configurations
 COPY haproxy.cfg /usr/local/etc/haproxy/haproxy.cfg
 COPY rsyslog.conf /etc/rsyslog.conf
-COPY keepalived.master.conf /etc/keepalived/keepalived.master.conf
-COPY keepalived.backup.conf /etc/keepalived/keepalived.backup.conf
+COPY keepalived.conf /etc/keepalived/keepalived.conf
 
 # Include our custom entrypoint that will the the job of lifting
 # rsyslog alongside haproxy.

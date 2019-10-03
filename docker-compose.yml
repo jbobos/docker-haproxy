@@ -8,47 +8,21 @@ services:
     networks:
       - my_bridge_network
 
-  proxy.master:
-    image: proxy.master:1.0.0-alpine
-    container_name: proxy.master
+  proxy:
+    image: proxy:1.0.0-alpine
     environment:
       - WEB_SERVER_NUM=5
       - WEB_SERVER_HOST=web
       - WEB_SERVER_PORT=80
       - DNS_SERVER_HOST=127.0.0.11
       - DNS_SERVER_PORT=53
-      - KEEPALIVED_STATE=master
     restart: always
     build:
       context: ./proxy/
     networks:
       hostnet: {}
     networks:
-      my_bridge_network:
-        ipv4_address: 172.18.0.199
-    cap_add:
-      - NET_ADMIN
-    depends_on:
-      - web
-
-  proxy.backup:
-    image: proxy.backup:1.0.0-alpine
-    container_name: proxy.backup
-    environment:
-      - WEB_SERVER_NUM=5
-      - WEB_SERVER_HOST=web
-      - WEB_SERVER_PORT=80
-      - DNS_SERVER_HOST=127.0.0.11
-      - DNS_SERVER_PORT=53
-      - KEEPALIVED_STATE=backup
-    restart: always
-    build:
-      context: ./proxy/
-    networks:
-      hostnet: {}
-    networks:
-      my_bridge_network:
-        ipv4_address: 172.18.0.198
+      - my_bridge_network
     cap_add:
       - NET_ADMIN
     depends_on:
@@ -56,9 +30,6 @@ services:
 
 networks:
   my_bridge_network:
-    ipam:
-      config:
-        - subnet: 172.18.0.0/24
   hostnet:
     external:
       name: host
