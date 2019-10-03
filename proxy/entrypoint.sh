@@ -4,6 +4,8 @@ set -o errexit
 set -o nounset
 
 readonly RSYSLOG_PID="/var/run/rsyslogd.pid"
+readonly KEEPALIVED_PID="/var/run/keepalived"
+readonly KEEPALIVED_CONF="/etc/keepalived/keepalived.$KEEPALIVED_STATE.conf"
 
 main() {
   start_keepalived
@@ -11,14 +13,13 @@ main() {
   start_haproxy "$@"
 }
 
-# make sure we have rsyslogd's pid file not
-# created before
+# make sure we have keepalived's pid file not created before
 start_keepalived() {
-  /usr/sbin/keepalived -n -l -D -f /etc/keepalived/keepalived.conf --dont-fork --log-console &
+  rm -rf $KEEPALIVED_PID
+  /usr/sbin/keepalived -n -l -D -f $KEEPALIVED_CONF --dont-fork --log-console &
 }
 
-# make sure we have rsyslogd's pid file not
-# created before
+# make sure we have rsyslogd's pid file not created before
 start_rsyslogd() {
   rm -f $RSYSLOG_PID
   rsyslogd
