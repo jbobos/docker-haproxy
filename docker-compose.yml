@@ -1,16 +1,16 @@
 # Dockerizing HAProxy Load Balancing
-# https://github.com/jbobos/docker-haproxy
+# https://github.com/arc-ts/keepalived
 #
 version: '3.1'
 services:
   web:
     image: nginx:1.17.3-alpine
+    networks:
+      - my_bridge_network
 
   proxy.master:
     image: proxy.master:1.0.0-alpine
     container_name: proxy.master
-    ports:
-      - 80
     environment:
       - WEB_SERVER_NUM=5
       - WEB_SERVER_HOST=web
@@ -21,14 +21,19 @@ services:
     build:
       context: ./proxy/
       dockerfile: proxy.master.Dockerfile
+    networks:
+      hostnet: {}
+    networks:
+      my_bridge_network:
+        ipv4_address: 172.18.0.199
+    cap_add:
+      - NET_ADMIN
     depends_on:
       - web
 
   proxy.backup:
     image: proxy.backup:1.0.0-alpine
     container_name: proxy.backup
-    ports:
-      - 80
     environment:
       - WEB_SERVER_NUM=5
       - WEB_SERVER_HOST=web
@@ -39,6 +44,22 @@ services:
     build:
       context: ./proxy/
       dockerfile: proxy.backup.Dockerfile
+    networks:
+      hostnet: {}
+    networks:
+      my_bridge_network:
+        ipv4_address: 172.18.0.198
+    cap_add:
+      - NET_ADMIN
     depends_on:
       - web
+
+networks:
+  my_bridge_network:
+    ipam:
+      config:
+        - subnet: 172.18.0.0/24
+  hostnet:
+    external:
+      name: host
 
