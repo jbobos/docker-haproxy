@@ -15,10 +15,12 @@ main() {
 
 # make sure we have keepalived's pid file not created before
 start_keepalived() {
-  # find the target ip and set it to KEEPALIVED_SRC_IP
+  # find the target ip and set it to KEEPALIVED_SRC_IP in keepalived.conf
   bind_target="$(ip addr show eth0 | grep -m 1 -E -o 'inet [0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | awk '{print $2}')"
-  # set it as KEEPALIVED_SRC_IP
   sed -i 's/$KEEPALIVED_SRC_IP/'"$bind_target"'/g' $KEEPALIVED_CONF
+
+  # set keepalived virtual ip
+  sed -i 's/$KEEPALIVED_VIP/'"$KEEPALIVED_VIP"'/g' $KEEPALIVED_CONF
 
   # delete keepalived's pid
   rm -rf $KEEPALIVED_PID
