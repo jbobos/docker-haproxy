@@ -1,15 +1,13 @@
-# Dockerizing HAProxy (rsyslogd) with Keepalived
+# HAProxy (with rsyslogd) and Keepalived in Docker
 
 ## Quick start
-### Start containers
 ```bash
-# scale to 5 web servers with 2 proxy
+# Start 5 web servers with 2 proxy servers
 docker-compose up -d --scale web=5 --scale proxy=2
 # show logs of the proxy container
 docker logs -f proxy
 ```
 
-### Access the virtual IP
 ```bash
 # Access the virtual IP specified in docker-compose.yml
 curl -v 172.18.0.101
