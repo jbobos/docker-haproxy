@@ -38,4 +38,28 @@ Docker version 1.13.1, build 7f2769b/1.13.1
 
 $ docker-compose --version
 docker-compose version 1.24.1, build 4667896b
+
+$ docker images --format "{{.Repository}}:{{.Tag}}"
+docker.io/nginx:1.17.3-alpine
+docker.io/haproxy:2.0.7-alpine
 ```
+
+## Details
+- rsyslogd
+  - install - [`apk add rsyslog`](https://github.com/jbobos/docker-haproxy/blob/master/proxy/Dockerfile#L12)
+  - config - [`rsyslog.conf`](https://github.com/jbobos/docker-haproxy/blob/master/proxy/rsyslog.conf)
+  - define [`local0`](https://github.com/jbobos/docker-haproxy/blob/master/proxy/rsyslog.conf#L18) which we will refer in the haproxy.cfg to haproxy.log
+  - link haproxy.log to [`stdout`](https://github.com/jbobos/docker-haproxy/blob/master/proxy/Dockerfile#L19)
+
+- HAProxy
+  - log to [`local0`](https://github.com/jbobos/docker-haproxy/blob/master/proxy/haproxy.cfg#L11) (i.e., stdout)
+  - use [`docker dns resolver`](https://github.com/jbobos/docker-haproxy/blob/master/proxy/haproxy.cfg#L25)
+  - response header [`X-Server`](https://github.com/jbobos/docker-haproxy/blob/master/proxy/haproxy.cfg#L43) to indicate which server was chosen
+  - use [`server-template`](https://github.com/jbobos/docker-haproxy/blob/master/proxy/haproxy.cfg#L45) to initialize multiple servers 
+
+- Keepalived
+  - install - [`apk add keepalived`](https://github.com/jbobos/docker-haproxy/blob/master/proxy/Dockerfile#L12)
+  - config - [`keepalived.conf`](https://github.com/jbobos/docker-haproxy/blob/master/proxy/keepalived.conf)
+  - automatically determine master/backup by [`random priority`](https://github.com/jbobos/docker-haproxy/blob/master/proxy/keepalived.conf#L7)
+  - automatically [figure out](https://github.com/jbobos/docker-haproxy/blob/master/proxy/entrypoint.sh#L19) [`multicast source ip`](https://github.com/jbobos/docker-haproxy/blob/master/proxy/keepalived.conf#L9)
+  - use official [`entrypoint shell`](https://github.com/jbobos/docker-haproxy/blob/master/proxy/entrypoint.sh#L40)
