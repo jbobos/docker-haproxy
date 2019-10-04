@@ -5,7 +5,7 @@
 # Start 5 web servers with 2 proxy servers
 docker-compose up -d --scale web=5 --scale proxy=2
 # show logs of the proxy container
-docker logs -f proxy
+docker-compose logs -f proxy
 ```
 
 ```bash
@@ -28,3 +28,14 @@ docker start docker-haproxy_proxy_1
 curl -v 172.18.0.101
 ```
 
+## Environment
+```bash
+$ cat /etc/redhat-release
+CentOS Linux release 7.6.1810
+
+$ docker --version
+Docker version 1.13.1, build 7f2769b/1.13.1
+
+$ docker-compose --version
+docker-compose version 1.24.1, build 4667896b
+```
