@@ -6,33 +6,31 @@ services:
   web:
     image: nginx:1.17.3-alpine
     networks:
-      - my_net
+    - app_net
 
   proxy:
     image: proxy:1.0.0-alpine
     environment:
-      - WEB_SERVER_NUM=5
-      - WEB_SERVER_HOST=web
-      - WEB_SERVER_PORT=80
-      - DNS_SERVER_HOST=127.0.0.11
-      - DNS_SERVER_PORT=53
-      - KEEPALIVED_VIP=172.18.0.101
+    - WEB_SERVER_NUM=5
+    - WEB_SERVER_HOST=web
+    - WEB_SERVER_PORT=80
+    - KEEPALIVED_VIP=172.18.0.101
     restart: always
     expose:
-      - 80
+    - 80
     build:
       context: ./proxy/
     networks:
       hostnet: {}
     networks:
-      - my_net
+    - app_net
     cap_add:
-      - NET_ADMIN
+    - NET_ADMIN
     depends_on:
-      - web
+    - web
 
 networks:
-  my_net:
+  app_net:
   hostnet:
     external:
       name: host
