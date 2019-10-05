@@ -62,4 +62,11 @@ docker.io/haproxy:2.0.7-alpine
   - config - [`keepalived.conf`](https://github.com/jbobos/docker-haproxy/blob/master/proxy/keepalived.conf)
   - automatically determine master/backup by [`random priority`](https://github.com/jbobos/docker-haproxy/blob/master/proxy/keepalived.conf#L7)
   - automatically [figure out](https://github.com/jbobos/docker-haproxy/blob/master/proxy/entrypoint.sh#L19) [`multicast source ip`](https://github.com/jbobos/docker-haproxy/blob/master/proxy/keepalived.conf#L9)
-  - use official [`entrypoint shell`](https://github.com/jbobos/docker-haproxy/blob/master/proxy/entrypoint.sh#L40)
+  - use official [`entrypoint script`](https://github.com/jbobos/docker-haproxy/blob/master/proxy/entrypoint.sh#L40)
+  - according [`arc-ts' prerequisites`](https://github.com/arc-ts/keepalived#prerequisites)
+    - should do `sysctl net.ipv4.ip_nonlocal_bind=1`, but seems not necessary to me
+    - host networking parameter `--net=host` can be [`configured in docker-compose.yml`](https://github.com/jbobos/docker-haproxy/blob/master/docker-compose.yml#L24)
+
+## Reference
+- https://github.com/arc-ts/keepalived
+- https://docs.docker.com/v17.09/compose/compose-file/#host-or-none
