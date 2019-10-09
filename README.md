@@ -58,7 +58,7 @@ docker.io/haproxy:2.0.7-alpine
   - use [`docker dns resolver`](https://github.com/jbobos/docker-haproxy/blob/master/proxy/haproxy.cfg#L25)
   - response header [`X-Server`](https://github.com/jbobos/docker-haproxy/blob/master/proxy/haproxy.cfg#L43) to indicate which server was chosen
   - use [`server-template`](https://github.com/jbobos/docker-haproxy/blob/master/proxy/haproxy.cfg#L45) to initialize multiple servers
-  - if haproxy stats access permission denied - https://stackoverflow.com/questions/26420729/haproxy-health-check-permission-denied
+  - if haproxy stats [`access permission denied`](https://stackoverflow.com/questions/26420729/haproxy-health-check-permission-denied)
 
 - Keepalived
   - install - [`apk add keepalived`](https://github.com/jbobos/docker-haproxy/blob/master/proxy/Dockerfile#L12)
