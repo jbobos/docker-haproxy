@@ -11,6 +11,8 @@ docker-compose logs -f proxy
 ```bash
 # Access the virtual IP specified in docker-compose.yml
 curl -v 172.18.0.101
+# Access Statistics Report
+curl -v 172.18.0.101:8080
 ```
 
 ## Testing
@@ -55,7 +57,8 @@ docker.io/haproxy:2.0.7-alpine
   - log to [`local0`](https://github.com/jbobos/docker-haproxy/blob/master/proxy/haproxy.cfg#L11) (i.e., stdout)
   - use [`docker dns resolver`](https://github.com/jbobos/docker-haproxy/blob/master/proxy/haproxy.cfg#L25)
   - response header [`X-Server`](https://github.com/jbobos/docker-haproxy/blob/master/proxy/haproxy.cfg#L43) to indicate which server was chosen
-  - use [`server-template`](https://github.com/jbobos/docker-haproxy/blob/master/proxy/haproxy.cfg#L45) to initialize multiple servers 
+  - use [`server-template`](https://github.com/jbobos/docker-haproxy/blob/master/proxy/haproxy.cfg#L45) to initialize multiple servers
+  - if haproxy stats access permission denied - https://stackoverflow.com/questions/26420729/haproxy-health-check-permission-denied
 
 - Keepalived
   - install - [`apk add keepalived`](https://github.com/jbobos/docker-haproxy/blob/master/proxy/Dockerfile#L12)
