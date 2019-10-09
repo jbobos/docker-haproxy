@@ -17,7 +17,8 @@ services:
     - KEEPALIVED_VIP=172.18.0.101
     restart: always
     expose:
-    - 80
+    - 80   # http in
+    - 8080 # haproxy stats
     build:
       context: ./proxy/
     networks:
